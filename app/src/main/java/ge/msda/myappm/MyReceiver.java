@@ -10,6 +10,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.telephony.SmsMessage;
 import android.util.Log;
 
 public class MyReceiver extends BroadcastReceiver {
@@ -26,8 +29,8 @@ public class MyReceiver extends BroadcastReceiver {
 
 
 
-        if(intent.getAction().equals("ge.msda.myappm.SOME_ACTION")) {
-            String value = intent.getExtras().getString("key");
+        if(intent.getAction().equals("com.lazo.TEXT_CLICKED")) {
+            Log.d(TAG, intent.getExtras().getString("key"));
         }
 
         Log.d(TAG, intent.getAction());
@@ -53,6 +56,33 @@ public class MyReceiver extends BroadcastReceiver {
             batteryListener.batteryTimeRemaining(bm.computeChargeTimeRemaining());
         }
 
+
+        if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
+            Log.d(TAG, intent.getAction());
+        }
+
+        if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
+
+            Bundle bundle = intent.getExtras();
+            SmsMessage[] msgs;
+            String msg_from;
+            if (bundle != null){
+                try{
+                    Object[] pdus = (Object[]) bundle.get("pdus");
+                    msgs = new SmsMessage[pdus.length];
+                    for(int i=0; i<msgs.length; i++){
+                        msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
+                        msg_from = msgs[i].getOriginatingAddress();
+                        String msgBody = msgs[i].getMessageBody();
+
+                        Log.d(TAG, msg_from + msgBody);
+
+                    }
+                }catch(Exception e){
+                            Log.d("Exception caught",e.getMessage());
+                }
+            }
+        }
 
     }
 

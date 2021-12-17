@@ -26,10 +26,13 @@ public class MainActivity extends AppCompatActivity implements ConnectivityListe
         myReceiver = new MyReceiver();
         intentFilter = new IntentFilter();
 
+
+        intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
+
         findViewById(R.id.text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("ge.msda.myappm.SOME_ACTION");
+                Intent intent = new Intent("com.lazo.TEXT_CLICKED");
                 intent.putExtra("key", "xksldkxel");
                 sendBroadcast(intent);
             }
