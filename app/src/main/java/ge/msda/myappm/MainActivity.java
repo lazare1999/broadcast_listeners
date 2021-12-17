@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements ConnectivityListener {
+public class MainActivity extends AppCompatActivity implements ConnectivityListener, BatteryListener {
 
     public static final String TAG = "MainActivity.LOG";
 
@@ -54,5 +54,10 @@ public class MainActivity extends AppCompatActivity implements ConnectivityListe
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(myReceiver);
+    }
+
+    @Override
+    public void batteryTimeRemaining(long timeRemaining) {
+        Log.d(TAG, "timeRemaining on battery- " + timeRemaining);
     }
 }
